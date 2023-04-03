@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import createRandomIds from '../utils/functions.js'
+import { createRandomIds, shuffle } from '../utils/functions.js'
 
 const Game = () => {
   const [correct, setCorrect] = useState(null)
@@ -20,12 +20,12 @@ const Game = () => {
           Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
         .then(([data1, data2, data3, data4]) => {
           setCorrect(data1)
-          setOptions([
+          setOptions(shuffle([
             { answer: data1.name, isCorrect: true, id: data1._id },
             { answer: data2.name, isCorrect: false, id: data2._id },
             { answer: data3.name, isCorrect: false, id: data3._id },
             { answer: data4.name, isCorrect: false, id: data4._id }
-          ])
+          ]))
         })
         .catch(error => {
           console.log(error)
@@ -39,7 +39,7 @@ const Game = () => {
 
   function handleAnswer (isCorrect, event) {
     if (isCorrect) setScore(score + 1)
-    event.target.classList.remove('btn-dark')
+    event.target.classList.remove('btn-light')
     event.target.classList.add(isCorrect ? 'btn-success' : 'btn-danger')
     setBtnDisabled(true)
     setTimeout(() => {
@@ -56,10 +56,10 @@ const Game = () => {
   if (gameHasEnded) {
     return (
       <div className='container position-absolute top-50 start-50 translate-middle card'>
-        <div className='text-center'>
+        <div className='text-center my-3'>
           <h1>Juego Terminado</h1>
           <h2 className='mb-3'>Obtuviste {score} puntos de {totalQuestions} </h2>
-          <button className='btn btn-dark mb-3' onClick={() => (window.location.href = '/')}>
+          <button className='btn btn-light' onClick={() => (window.location.href = '/')}>
             Volver a Jugar
           </button>
         </div>
@@ -69,9 +69,9 @@ const Game = () => {
 
   return (
     <div id='question' className='container position-absolute top-50 start-50 translate-middle card'>
-      <div className='text-center'>
+      <div className='text-center mt-3'>
         <h1>¿Cómo se llama este personaje?</h1>
-        <h2>Pregunta {currentQuestion} de {totalQuestions}</h2>
+        <h3>Pregunta {currentQuestion} de {totalQuestions}</h3>
         <div className='mb-3'>
           <img
             className='character'
@@ -81,10 +81,10 @@ const Game = () => {
           />
         </div>
       </div>
-      <div id='answers' className='text-center mb-3'>
+      <div id='answers' className='d-flex flex-column mb-3'>
         {options.map(option => (
           <button
-            className='btn btn-dark m-2'
+            className='btn btn-light m-2'
             key={option.id}
             onClick={(event) => handleAnswer(option.isCorrect, event)}
             disabled={btnDisabled}
