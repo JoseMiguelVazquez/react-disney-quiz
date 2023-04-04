@@ -25,15 +25,36 @@
   min-height: 100vh;
 }
 
+.card {
+  border-radius: 50px!important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#home-menu,
+#end-menu {
+  min-height: 281px;
+}
+
 .custom-wrapper {
   min-height: 100vh;
 }
 
-/* #question {
-  background-color: rgb(231, 222, 255);
-}  */
+#question {
+  min-height: 360px;
+}
 
 .character {
   width: 200px;
+  border-radius: 20px;
   filter:blur(0px);
+}
+
+#answers {
+  min-height: 216px;
+}
+
+button,
+.btn-custom {
+  border: 1px solid rgba(56, 38, 176, 1)!important;
+  border-radius: 20px!important;
 }

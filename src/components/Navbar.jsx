@@ -1,12 +1,28 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import earsLogo from '../assets/ears_logo.png'
 
 const Navbar = () => {
   return (
-    <nav className='position-absolute w-100 navbar navbar-expand-sm'>
+    <nav className='position-absolute w-100 navbar navbar-expand-sm bg-white'>
       <div className='container-fluid'>
-        <NavLink className='navbar-brand' to='/'>Logo</NavLink>
-        <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNavDropdown' aria-controls='navbarNavDropdown' aria-expanded='false' aria-label='Toggle navigation'>
+        <NavLink className='navbar-brand d-flex align-items-center' to='/'>
+          <img
+            src={earsLogo}
+            alt='ears logo'
+            style={{ width: 30 }}
+          />
+          Trivia
+        </NavLink>
+        <button
+          className='navbar-toggler'
+          type='button'
+          data-bs-toggle='collapse'
+          data-bs-target='#navbarNavDropdown'
+          aria-controls='navbarNavDropdown'
+          aria-expanded='false'
+          aria-label='Toggle navigation'
+        >
           <span className='navbar-toggler-icon' />
         </button>
         <div className='collapse navbar-collapse' id='navbarNavDropdown'>
@@ -18,7 +34,12 @@ const Navbar = () => {
               <NavLink className='nav-link' to='/about'>About</NavLink>
             </li>
             <li className='nav-item dropdown'>
-              <NavLink className='nav-link dropdown-toggle' to='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
+              <NavLink
+                className='nav-link dropdown-toggle'
+                to='#' role='button'
+                data-bs-toggle='dropdown'
+                aria-expanded='false'
+              >
                 Games
               </NavLink>
               <ul className='dropdown-menu'>

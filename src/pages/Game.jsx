@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { createRandomIds, shuffle } from '../utils/functions.js'
+import Loading from '../components/Loading'
 
 const Game = () => {
   const [correct, setCorrect] = useState(null)
@@ -8,6 +9,7 @@ const Game = () => {
   const [score, setScore] = useState(0)
   const [gameHasEnded, setGameHasEnded] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(false)
+  const [loading, setLoading] = useState(true)
   const hasFetchData = useRef(false)
 
   const totalQuestions = 5
@@ -26,6 +28,7 @@ const Game = () => {
             { answer: data3.name, isCorrect: false, id: data3._id },
             { answer: data4.name, isCorrect: false, id: data4._id }
           ]))
+          setLoading(false)
         })
         .catch(error => {
           console.log(error)
@@ -63,7 +66,7 @@ const Game = () => {
   if (gameHasEnded) {
     return (
       <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center'>
-        <div className='col-11 col-sm-8 card'>
+        <div id='end-menu' className='col-11 col-sm-8 card d-flex justify-content-center'>
           <div className='text-center my-3'>
             <h1>Complete!</h1>
             <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
@@ -78,29 +81,33 @@ const Game = () => {
 
   return (
     <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center'>
-      <div id='question' className='col-11 col-sm-8 card'>
-        <div className='text-center mt-3 d-flex flex-column align-items-center'>
+      <div id='question' className='col-11 col-sm-9 card'>
+        <div className='text-center mt-4 d-flex flex-column align-items-center'>
           <h1>What is this character's name?</h1>
           <h3>Question {currentQuestion} of {totalQuestions}</h3>
-          <div className='mb-3 col-10'>
-            <img
-              className='character'
-              src={correct?.imageUrl}
-              alt='character'
-            />
-          </div>
         </div>
-        <div id='answers' className='d-flex flex-column mb-3'>
-          {options.map(option => (
-            <button
-              className={`btn btn-light m-2 btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
-              key={option.id}
-              onClick={(event) => handleAnswer(option.isCorrect, event)}
-              disabled={btnDisabled}
-            >
-              {option.answer}
-            </button>
-          ))}
+        <div className='d-flex flex-wrap mb-4'>
+          <div className='ps-3 col-12 col-sm-6 text-center d-flex justify-content-center align-items-center'>
+            {loading
+              ? <Loading />
+              : <img
+                  className='character'
+                  src={correct?.imageUrl}
+                  alt='character'
+                />}
+          </div>
+          <div id='answers' className='d-flex flex-column justify-content-center align-items-start col-12 col-sm-6 pe-5'>
+            {options.map(option => (
+              <button
+                className={`btn btn-light m-2 w-100 text-start btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
+                key={option.id}
+                onClick={(event) => handleAnswer(option.isCorrect, event)}
+                disabled={btnDisabled}
+              >
+                {option.answer}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
