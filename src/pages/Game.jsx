@@ -5,7 +5,7 @@ import Loading from '../components/Loading'
 const Game = () => {
   const [correct, setCorrect] = useState(null)
   const [options, setOptions] = useState([])
-  const [currentQuestion, setCurrentQuestion] = useState(1)
+  const [currentQuestion, setCurrentQuestion] = useState(0)
   const [score, setScore] = useState(0)
   const [gameHasEnded, setGameHasEnded] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(false)
@@ -63,10 +63,26 @@ const Game = () => {
     }, 1000)
   }
 
+  if (currentQuestion === 0) {
+    return (
+      <div className='slide-in-elliptic-top-fwd custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
+        <div id='end-menu' className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'>
+          <div className='text-center my-3'>
+            <h1>Welcome!</h1>
+            <p>Choose the correct character name from the options</p>
+            <button className='btn btn-light' onClick={() => (setCurrentQuestion(currentQuestion + 1))}>
+              Begin!
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (gameHasEnded) {
     return (
-      <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center'>
-        <div id='end-menu' className='col-11 col-sm-8 card d-flex justify-content-center'>
+      <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
+        <div id='end-menu' className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'>
           <div className='text-center my-3'>
             <h1>Complete!</h1>
             <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
@@ -80,8 +96,8 @@ const Game = () => {
   }
 
   return (
-    <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center'>
-      <div id='question' className='col-11 col-sm-9 card'>
+    <div className='slide-in-left custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
+      <div id='question' className='col-11 col-sm-9 col-xl-7 col-xxl-5 card p-2'>
         <div className='text-center mt-4 d-flex flex-column align-items-center'>
           <h1>What is this character's name?</h1>
           <h3>Question {currentQuestion} of {totalQuestions}</h3>
@@ -91,7 +107,7 @@ const Game = () => {
             {loading
               ? <Loading />
               : <img
-                  className='character'
+                  className='character mb-2'
                   src={correct?.imageUrl}
                   alt='character'
                 />}

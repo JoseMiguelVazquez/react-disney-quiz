@@ -4,10 +4,11 @@ import earsLogo from '../assets/ears_logo.png'
 
 const Navbar = () => {
   return (
-    <nav className='position-absolute w-100 navbar navbar-expand-sm bg-white'>
+    <nav className='navbar navbar-expand-sm bg-white'>
       <div className='container-fluid'>
         <NavLink className='navbar-brand d-flex align-items-center' to='/'>
           <img
+            className='me-1'
             src={earsLogo}
             alt='ears logo'
             style={{ width: 30 }}
