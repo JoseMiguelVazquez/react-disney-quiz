@@ -38,9 +38,16 @@ const Game = () => {
   }, [currentQuestion])
 
   function handleAnswer (isCorrect, event) {
-    if (isCorrect) setScore(score + 1)
+    const btnCorrect = document.querySelector('.btn-correct')
     event.target.classList.remove('btn-light')
-    event.target.classList.add(isCorrect ? 'btn-success' : 'btn-danger')
+    if (isCorrect) {
+      setScore(score + 1)
+      event.target.classList.add('btn-success')
+    } else {
+      event.target.classList.add('btn-danger')
+      btnCorrect.classList.remove('btn-light')
+      btnCorrect.classList.add('btn-success')
+    }
     setBtnDisabled(true)
     setTimeout(() => {
       if (currentQuestion === totalQuestions) {
@@ -55,43 +62,46 @@ const Game = () => {
 
   if (gameHasEnded) {
     return (
-      <div className='container position-absolute top-50 start-50 translate-middle card'>
-        <div className='text-center my-3'>
-          <h1>Juego Terminado</h1>
-          <h2 className='mb-3'>Obtuviste {score} puntos de {totalQuestions} </h2>
-          <button className='btn btn-light' onClick={() => (window.location.href = '/')}>
-            Volver a Jugar
-          </button>
+      <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center'>
+        <div className='col-11 col-sm-8 card'>
+          <div className='text-center my-3'>
+            <h1>Complete!</h1>
+            <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
+            <button className='btn btn-light' onClick={() => (window.location.href = '/game-1')}>
+              Play Again
+            </button>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div id='question' className='container position-absolute top-50 start-50 translate-middle card'>
-      <div className='text-center mt-3'>
-        <h1>¿Cómo se llama este personaje?</h1>
-        <h3>Pregunta {currentQuestion} de {totalQuestions}</h3>
-        <div className='mb-3'>
-          <img
-            className='character'
-            src={correct?.imageUrl}
-            alt='character'
-            style={{ width: 200 }}
-          />
+    <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center'>
+      <div id='question' className='col-11 col-sm-8 card'>
+        <div className='text-center mt-3 d-flex flex-column align-items-center'>
+          <h1>What is this character's name?</h1>
+          <h3>Question {currentQuestion} of {totalQuestions}</h3>
+          <div className='mb-3 col-10'>
+            <img
+              className='character'
+              src={correct?.imageUrl}
+              alt='character'
+            />
+          </div>
         </div>
-      </div>
-      <div id='answers' className='d-flex flex-column mb-3'>
-        {options.map(option => (
-          <button
-            className='btn btn-light m-2'
-            key={option.id}
-            onClick={(event) => handleAnswer(option.isCorrect, event)}
-            disabled={btnDisabled}
-          >
-            {option.answer}
-          </button>
-        ))}
+        <div id='answers' className='d-flex flex-column mb-3'>
+          {options.map(option => (
+            <button
+              className={`btn btn-light m-2 btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
+              key={option.id}
+              onClick={(event) => handleAnswer(option.isCorrect, event)}
+              disabled={btnDisabled}
+            >
+              {option.answer}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   )
