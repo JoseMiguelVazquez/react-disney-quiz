@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { createRandomIds, shuffle } from '../utils/functions.js'
 import Loading from '../components/Loading'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const Game = () => {
   const [correct, setCorrect] = useState(null)
@@ -10,6 +11,7 @@ const Game = () => {
   const [gameHasEnded, setGameHasEnded] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [showQuestion, setShowQuestion] = useState(true)
   const hasFetchData = useRef(false)
 
   const totalQuestions = 5
@@ -53,14 +55,25 @@ const Game = () => {
     }
     setBtnDisabled(true)
     setTimeout(() => {
-      if (currentQuestion === totalQuestions) {
-        setGameHasEnded(true)
-      } else {
-        hasFetchData.current = false
-        setCurrentQuestion(currentQuestion + 1)
-      }
+      hasFetchData.current = false
+      setCurrentQuestion(currentQuestion + 1)
+      setShowQuestion(false)
       setBtnDisabled(false)
     }, 1000)
+    setTimeout(() => {
+      setShowQuestion(true)
+    }, 1500)
+    setTimeout(() => {
+      if (currentQuestion === totalQuestions) {
+        setGameHasEnded(true)
+      }
+    }, 1500)
+  }
+
+  function handleStart () {
+    setScore(0)
+    setGameHasEnded(false)
+    setCurrentQuestion(currentQuestion + 1)
   }
 
   if (currentQuestion === 0) {
@@ -68,11 +81,15 @@ const Game = () => {
       <div className='slide-in-elliptic-top-fwd custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
         <div id='end-menu' className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'>
           <div className='text-center my-3'>
-            <h1>Welcome!</h1>
+            <h1>Game 1</h1>
             <p>Choose the correct character name from the options</p>
-            <button className='btn btn-light' onClick={() => (setCurrentQuestion(currentQuestion + 1))}>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+              className='btn btn-light btn-custom col-6' onClick={() => (handleStart())}
+            >
               Begin!
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -81,51 +98,68 @@ const Game = () => {
 
   if (gameHasEnded) {
     return (
-      <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
+      <motion.div
+        initial={{ x: '-100vw' }}
+        animate={{ x: 0 }}
+        transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
+        className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'
+      >
         <div id='end-menu' className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'>
           <div className='text-center my-3'>
             <h1>Complete!</h1>
             <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
-            <button className='btn btn-light' onClick={() => (window.location.href = '/game-1')}>
+            <button className='btn btn-light' onClick={() => (setCurrentQuestion(0))}>
               Play Again
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     )
   }
 
   return (
-    <div className='slide-in-left custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
-      <div id='question' className='col-11 col-sm-9 col-xl-7 col-xxl-5 card p-2'>
-        <div className='text-center mt-4 d-flex flex-column align-items-center'>
-          <h1>What is this character's name?</h1>
-          <h3>Question {currentQuestion} of {totalQuestions}</h3>
-        </div>
-        <div className='d-flex flex-wrap mb-4'>
-          <div className='ps-3 col-12 col-sm-6 text-center d-flex justify-content-center align-items-center'>
-            {loading
-              ? <Loading />
-              : <img
-                  className='character mb-2'
-                  src={correct?.imageUrl}
-                  alt='character'
-                />}
-          </div>
-          <div id='answers' className='d-flex flex-column justify-content-center align-items-start col-12 col-sm-6 pe-5'>
-            {options.map(option => (
-              <button
-                className={`btn btn-light m-2 w-100 text-start btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
-                key={option.id}
-                onClick={(event) => handleAnswer(option.isCorrect, event)}
-                disabled={btnDisabled}
-              >
-                {option.answer}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+    <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
+      <AnimatePresence>
+        {showQuestion && (
+          <motion.div
+            initial={{ x: '-100vw' }}
+            animate={{ x: 0 }}
+            transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
+            exit={{ x: '200vw' }}
+            id='question'
+            className='col-11 col-sm-9 col-xl-7 col-xxl-5 card p-2'
+          >
+            <div className='text-center mt-4 d-flex flex-column align-items-center'>
+              <h1>What is this character's name?</h1>
+              <h3>Question {currentQuestion} of {totalQuestions}</h3>
+            </div>
+            <div className='d-flex flex-wrap mb-4'>
+              <div className='ps-3 col-12 col-sm-6 text-center d-flex justify-content-center align-items-center'>
+                {loading
+                  ? <Loading />
+                  : <img
+                      className='character mb-2'
+                      src={correct?.imageUrl}
+                      alt='character'
+                    />}
+              </div>
+              <div id='answers' className='d-flex flex-column justify-content-center align-items-start col-12 col-sm-6 pe-5'>
+                {options.map(option => (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    className={`btn btn-light m-2 w-100 text-start btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
+                    key={option.id}
+                    onClick={(event) => handleAnswer(option.isCorrect, event)}
+                    disabled={btnDisabled}
+                  >
+                    {option.answer}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
