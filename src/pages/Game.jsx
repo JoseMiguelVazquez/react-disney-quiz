@@ -108,8 +108,8 @@ const Game = () => {
           <div className='text-center my-3'>
             <h1>Complete!</h1>
             <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
-            <button className='btn btn-light' onClick={() => (setCurrentQuestion(0))}>
-              Play Again
+            <button className='btn btn-light col-6' onClick={() => (setCurrentQuestion(0))}>
+              Play Again!
             </button>
           </div>
         </div>
@@ -152,7 +152,7 @@ const Game = () => {
                     onClick={(event) => handleAnswer(option.isCorrect, event)}
                     disabled={btnDisabled}
                   >
-                    {option.answer}
+                    <b>{option.answer}</b>
                   </motion.button>
                 ))}
               </div>

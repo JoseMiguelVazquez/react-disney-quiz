@@ -6,20 +6,15 @@
 
 .App {
   /* ff 3.6+ */
-  background:-moz-linear-gradient(180deg, rgba(56, 38, 176, 1) 0%, rgba(95, 58, 187, 1) 50%, rgba(134, 78, 197, 1) 100%); 
-
+  background:-moz-linear-gradient(180deg, rgba(56, 38, 176, 1) 0%, rgba(95, 58, 187, 1) 50%, rgba(134, 78, 197, 1) 100%);
   /* safari 5.1+,chrome 10+ */
   background:-webkit-linear-gradient(180deg, rgba(56, 38, 176, 1) 0%, rgba(95, 58, 187, 1) 50%, rgba(134, 78, 197, 1) 100%);
-
   /* opera 11.10+ */
   background:-o-linear-gradient(180deg, rgba(56, 38, 176, 1) 0%, rgba(95, 58, 187, 1) 50%, rgba(134, 78, 197, 1) 100%);
-
   /* ie 6-9 */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#864EC5', endColorstr='#3826B0', GradientType=1 );
-
   /* ie 10+ */
   background:-ms-linear-gradient(180deg, rgba(56, 38, 176, 1) 0%, rgba(95, 58, 187, 1) 50%, rgba(134, 78, 197, 1) 100%);
-
   /* global 94%+ browsers support */
   background:linear-gradient(180deg, rgba(56, 38, 176, 1) 0%, rgba(95, 58, 187, 1) 50%, rgba(134, 78, 197, 1) 100%);
   min-height: 100vh;
@@ -34,6 +29,25 @@
 #home-menu,
 #end-menu {
   min-height: 281px;
+}
+
+#home-title {
+  color: white!important;
+}
+
+#arc {
+  animation: svg-shadow 1s ease-in-out infinite alternate;
+}
+
+@keyframes svg-shadow {
+  from {
+    filter: drop-shadow( 0 0 5px #fff) drop-shadow( 0 0 15px #af32f8) drop-shadow( 0 0 10px #af32f8);
+  }
+
+  to {
+    
+    filter: drop-shadow( 0 0 8px #fff) drop-shadow( 0 0 25px #af32f8) drop-shadow( 0 0 20px #af32f8);
+  }
 }
 
 .custom-wrapper {
@@ -96,4 +110,12 @@ button,
 .btn-custom {
   border: 1px solid rgba(56, 38, 176, 1)!important;
   border-radius: 20px!important;
+}
+
+button:hover {
+  background-color: rgb(240, 227, 252)!important;
+}
+
+h1,h2,h3,p,button {
+  color: rgb(37, 18, 131)!important;
 }
