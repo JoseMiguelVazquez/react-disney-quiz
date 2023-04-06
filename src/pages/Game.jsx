@@ -4,6 +4,9 @@ import Loading from '../components/Loading'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Game = () => {
+  const totalQuestions = 2
+  const timePerQuestion = 5
+
   const [correct, setCorrect] = useState(null)
   const [options, setOptions] = useState([])
   const [currentQuestion, setCurrentQuestion] = useState(0)
@@ -12,9 +15,9 @@ const Game = () => {
   const [btnDisabled, setBtnDisabled] = useState(false)
   const [loading, setLoading] = useState(true)
   const [showMenu, setShowMenu] = useState(true)
+  const [remainingTime, setRemainingTime] = useState(timePerQuestion)
+  const [isPlaying, setIsPlaying] = useState(false)
   const hasFetchData = useRef(false)
-
-  const totalQuestions = 2
 
   useEffect(() => {
     function fetchData () {
@@ -42,6 +45,40 @@ const Game = () => {
     }
   }, [currentQuestion])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (remainingTime > 0) setRemainingTime((prev) => prev - 1)
+      if (remainingTime === 1 && isPlaying) {
+        const btnCorrect = document.querySelector('.btn-correct')
+        setBtnDisabled(true)
+        btnCorrect.classList.add('btn-success')
+        nextQuestion()
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [remainingTime])
+
+  function nextQuestion () {
+    setTimeout(() => {
+      hasFetchData.current = false
+      setCurrentQuestion(currentQuestion + 1)
+      setShowMenu(false)
+      setBtnDisabled(false)
+    }, 1000)
+    setTimeout(() => {
+      setShowMenu(true)
+      setRemainingTime(timePerQuestion)
+    }, 1500)
+    setTimeout(() => {
+      if (currentQuestion === totalQuestions) {
+        setIsPlaying(false)
+        setBtnDisabled(false)
+        setGameHasEnded(true)
+      }
+    }, 1500)
+  }
+
   function handleAnswer (isCorrect, event) {
     const btnCorrect = document.querySelector('.btn-correct')
     if (isCorrect) {
@@ -52,29 +89,18 @@ const Game = () => {
       btnCorrect.classList.add('btn-success')
     }
     setBtnDisabled(true)
-    setTimeout(() => {
-      hasFetchData.current = false
-      setCurrentQuestion(currentQuestion + 1)
-      setShowMenu(false)
-      setBtnDisabled(false)
-    }, 1000)
-    setTimeout(() => {
-      setShowMenu(true)
-    }, 1500)
-    setTimeout(() => {
-      if (currentQuestion === totalQuestions) {
-        setGameHasEnded(true)
-      }
-    }, 1500)
+    nextQuestion()
   }
 
   function handleStart () {
+    setIsPlaying(true)
     setShowMenu(false)
     setScore(0)
     setGameHasEnded(false)
     setCurrentQuestion(currentQuestion + 1)
     setTimeout(() => {
       setShowMenu(true)
+      setRemainingTime(timePerQuestion)
     }, 500)
   }
 
@@ -165,7 +191,7 @@ const Game = () => {
               <h3>Question {currentQuestion} of {totalQuestions}</h3>
             </div>
             <div className='d-flex flex-wrap mb-4'>
-              <div className='ps-3 col-12 col-sm-6 text-center d-flex justify-content-center align-items-center'>
+              <div className='ps-3 col-12 col-sm-6 text-center d-flex flex-column justify-content-center align-items-center'>
                 {loading
                   ? <Loading />
                   : <img
@@ -173,6 +199,7 @@ const Game = () => {
                       src={correct?.imageUrl}
                       alt='character'
                     />}
+                <span>Remaining Time: {remainingTime}</span>
               </div>
               <div id='answers' className='d-flex flex-column justify-content-center align-items-start col-12 col-sm-6 pe-5'>
                 {options.map(option => (
