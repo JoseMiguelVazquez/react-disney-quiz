@@ -34,7 +34,7 @@ const Home = () => {
               fill='none'
             />
           </svg>
-          <img className='position-relative' src={castleLogoWhite} alt='ears logo' style={{ width: 300 }} />
+          <img id='home-image' className='position-relative' src={castleLogoWhite} alt='castle logo' style={{ width: 300 }} />
         </div>
         <h1 id='home-title' className='mb-3'>Disney Character Game</h1>
         <Link className='col-6' to='/game-1'>

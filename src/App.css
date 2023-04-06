@@ -4,6 +4,10 @@
   padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+}
+
 .App {
   /* ff 3.6+ */
   background:-moz-linear-gradient(180deg, rgba(56, 38, 176, 1) 0%, rgba(95, 58, 187, 1) 50%, rgba(134, 78, 197, 1) 100%);
@@ -114,8 +118,28 @@ button,
 
 button:hover {
   background-color: rgb(240, 227, 252)!important;
+  animation: svg-shadow-two 1s ease-in-out infinite alternate;
+}
+
+@keyframes svg-shadow-two {
+  from {
+    filter: drop-shadow( 0 0 1px #fff) drop-shadow( 0 0 4px #af32f8) drop-shadow( 0 0 6px #af32f8);
+  }
+
+  to {
+    
+    filter: drop-shadow( 0 0 2px #fff) drop-shadow( 0 0 6px #af32f8) drop-shadow( 0 0 10px #af32f8);
+  }
 }
 
 h1,h2,h3,p,button {
   color: rgb(37, 18, 131)!important;
+}
+
+.btn-correct {
+  background-color: rgb(24, 224, 107);
+}
+
+.btn-incorrect {
+  background-color: crimson;
 }

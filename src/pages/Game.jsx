@@ -14,7 +14,7 @@ const Game = () => {
   const [showQuestion, setShowQuestion] = useState(true)
   const hasFetchData = useRef(false)
 
-  const totalQuestions = 5
+  const totalQuestions = 10
 
   useEffect(() => {
     function fetchData () {
@@ -108,9 +108,13 @@ const Game = () => {
           <div className='text-center my-3'>
             <h1>Complete!</h1>
             <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
-            <button className='btn btn-light col-6' onClick={() => (setCurrentQuestion(0))}>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+              className='btn btn-light col-6' onClick={() => (setCurrentQuestion(0))}
+            >
               Play Again!
-            </button>
+            </motion.button>
           </div>
         </div>
       </motion.div>
@@ -125,7 +129,7 @@ const Game = () => {
             initial={{ x: '-100vw' }}
             animate={{ x: 0 }}
             transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
-            exit={{ x: '200vw' }}
+            exit={{ x: '200vw', opacity: 0 }}
             id='question'
             className='col-11 col-sm-9 col-xl-7 col-xxl-5 card p-2'
           >
@@ -152,7 +156,7 @@ const Game = () => {
                     onClick={(event) => handleAnswer(option.isCorrect, event)}
                     disabled={btnDisabled}
                   >
-                    <b>{option.answer}</b>
+                    {option.answer}
                   </motion.button>
                 ))}
               </div>
