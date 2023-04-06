@@ -100,7 +100,7 @@ const Game = () => {
               className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'
             >
               <div className='text-center my-3'>
-                <h1>Game 1</h1>
+                <h1>Character Game</h1>
                 <p>Choose the correct character name from the options</p>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
