@@ -167,7 +167,7 @@ const Game = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                  className='btn btn-custom col-6' onClick={() => (handleEnding())}
+                  className='btn btn-custom col-6 mt-2' onClick={() => (handleEnding())}
                 >
                   Play Again!
                 </motion.button>
@@ -191,7 +191,7 @@ const Game = () => {
             id='question'
             className='col-11 col-sm-9 col-xl-7 col-xxl-5 card p-2'
           >
-            <div className='position-absolute mt-4 ms-4'>
+            <div className='position-absolute mt-5 ms-1 ms-sm-3 ms-md-4 ms-lg-5'>
               <svg width='50' height='50'>
                 <AnimatePresence>
                   {!btnDisabled && (
@@ -204,7 +204,7 @@ const Game = () => {
                         opacity: 0,
                         transition: { duration: 0.1, ease: 'easeInOut' }
                       }}
-                      r='20'
+                      r='15'
                       cx='25'
                       cy='25'
                       stroke='rgb(37, 18, 131)'
@@ -216,7 +216,7 @@ const Game = () => {
               </svg>
             </div>
             <div className='text-center mt-4 d-flex flex-column align-items-center'>
-              <h1>What is this character's name?</h1>
+              <h2>What is this character's name?</h2>
               <h3>Question {currentQuestion} of {totalQuestions}</h3>
             </div>
             <div className='d-flex flex-wrap mb-4'>
