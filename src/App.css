@@ -72,7 +72,7 @@ button:hover {
   }
 }
 
-h1,h2,h3,p,.btn-custom {
+h1,h2,h3,h4,p,.btn-custom {
   color: rgb(37, 18, 131)!important;
 }
 
@@ -129,4 +129,10 @@ h1,h2,h3,p,.btn-custom {
 
 .btn-incorrect {
   background-color: crimson;
+}
+
+/*ABOUT STYLES*/
+
+#about-div a {
+  color: #dfa9ff;
 }

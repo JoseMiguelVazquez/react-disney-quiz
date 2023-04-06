@@ -4,8 +4,8 @@ import Loading from '../components/Loading'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Game = () => {
-  const totalQuestions = 2
-  const timePerQuestion = 5
+  const totalQuestions = 5
+  const timePerQuestion = 10
 
   const [correct, setCorrect] = useState(null)
   const [options, setOptions] = useState([])
@@ -158,7 +158,12 @@ const Game = () => {
             >
               <div className='text-center my-3'>
                 <h1>Complete!</h1>
-                <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
+                <h2 className='mb-2'>Score: {score}/{totalQuestions} </h2>
+                {score > (totalQuestions * 0.7)
+                  ? <h4>You are a Disney Guru!</h4>
+                  : score > (totalQuestions * 0.5)
+                    ? <h4>Good Job!</h4>
+                    : <h4>Keep Trying!</h4>}
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 10 }}
@@ -186,6 +191,30 @@ const Game = () => {
             id='question'
             className='col-11 col-sm-9 col-xl-7 col-xxl-5 card p-2'
           >
+            <div className='position-absolute mt-4 ms-4'>
+              <svg width='50' height='50'>
+                <AnimatePresence>
+                  {!btnDisabled && (
+                    <motion.circle
+                      initial={{ pathLength: 1 }}
+                      animate={{ pathLength: 0 }}
+                      transition={{ duration: 10, ease: 'easeInOut' }}
+                      exit={{
+                        pathLength: 1,
+                        opacity: 0,
+                        transition: { duration: 0.1, ease: 'easeInOut' }
+                      }}
+                      r='20'
+                      cx='25'
+                      cy='25'
+                      stroke='rgb(37, 18, 131)'
+                      fill='none'
+                      strokeWidth='5px'
+                    />
+                  )}
+                </AnimatePresence>
+              </svg>
+            </div>
             <div className='text-center mt-4 d-flex flex-column align-items-center'>
               <h1>What is this character's name?</h1>
               <h3>Question {currentQuestion} of {totalQuestions}</h3>
@@ -199,7 +228,7 @@ const Game = () => {
                       src={correct?.imageUrl}
                       alt='character'
                     />}
-                <span>Remaining Time: {remainingTime}</span>
+                {/* <span>Remaining Time: {remainingTime}</span> */}
               </div>
               <div id='answers' className='d-flex flex-column justify-content-center align-items-start col-12 col-sm-6 pe-5'>
                 {options.map(option => (
