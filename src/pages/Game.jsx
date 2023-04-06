@@ -4,7 +4,7 @@ import Loading from '../components/Loading'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Game = () => {
-  const totalQuestions = 5
+  const totalQuestions = 10
   const timePerQuestion = 10
 
   const [correct, setCorrect] = useState(null)
