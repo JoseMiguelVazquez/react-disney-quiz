@@ -51,7 +51,7 @@ const Game = () => {
       if (remainingTime === 1 && isPlaying) {
         const btnCorrect = document.querySelector('.btn-correct')
         setBtnDisabled(true)
-        btnCorrect.classList.add('btn-success')
+        btnCorrect.classList.add('btn-choose-correct')
         nextQuestion()
       }
     }, 1000)
@@ -83,10 +83,10 @@ const Game = () => {
     const btnCorrect = document.querySelector('.btn-correct')
     if (isCorrect) {
       setScore(score + 1)
-      event.target.classList.add('btn-success')
+      event.target.classList.add('btn-choose-correct')
     } else {
-      event.target.classList.add('btn-danger')
-      btnCorrect.classList.add('btn-success')
+      event.target.classList.add('btn-choose-incorrect')
+      btnCorrect.classList.add('btn-choose-correct')
     }
     setBtnDisabled(true)
     nextQuestion()

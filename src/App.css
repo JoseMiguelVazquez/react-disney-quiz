@@ -123,12 +123,12 @@ h1,h2,h3,h4,p,.btn-custom {
   min-height: 216px;
 }
 
-.btn-correct {
-  background-color: rgb(24, 224, 107);
+.btn-choose-correct {
+  background-color: rgb(24, 224, 107)!important;
 }
 
-.btn-incorrect {
-  background-color: crimson;
+.btn-choose-incorrect {
+  background-color: crimson!important;
 }
 
 /*ABOUT STYLES*/
