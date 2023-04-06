@@ -5,6 +5,7 @@ import App from './App'
 import 'bootstrap/dist/css/bootstrap.min.css'
 // Bootstrap Bundle JS
 import 'bootstrap/dist/js/bootstrap.bundle.min'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

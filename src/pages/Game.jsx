@@ -14,8 +14,7 @@ const Game = () => {
   const [showQuestion, setShowQuestion] = useState(true)
   const hasFetchData = useRef(false)
 
-  const totalQuestions = 10
-
+  const totalQuestions = 5
   useEffect(() => {
     function fetchData () {
       const charactersFetched = createRandomIds().map(id => fetch(`https://api.disneyapi.dev/characters/${id}`))
@@ -71,40 +70,56 @@ const Game = () => {
   }
 
   function handleStart () {
+    setShowQuestion(false)
     setScore(0)
     setGameHasEnded(false)
     setCurrentQuestion(currentQuestion + 1)
+    setTimeout(() => {
+      setShowQuestion(true)
+    }, 500)
   }
 
   if (currentQuestion === 0) {
     return (
-      <div className='slide-in-elliptic-top-fwd custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
-        <div id='end-menu' className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'>
-          <div className='text-center my-3'>
-            <h1>Game 1</h1>
-            <p>Choose the correct character name from the options</p>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              className='btn btn-light btn-custom col-6' onClick={() => (handleStart())}
+      <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
+        <AnimatePresence>
+          {showQuestion && (
+            <motion.div
+              initial={{ x: '-100vw' }}
+              animate={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
+              exit={{ x: '200vw', opacity: 0 }}
+              id='begin-menu'
+              className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'
             >
-              Begin!
-            </motion.button>
-          </div>
-        </div>
+              <div className='text-center my-3'>
+                <h1>Game 1</h1>
+                <p>Choose the correct character name from the options</p>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                  className='btn btn-light btn-custom col-6' onClick={() => (handleStart())}
+                >
+                  Begin!
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     )
   }
 
   if (gameHasEnded) {
     return (
-      <motion.div
-        initial={{ x: '-100vw' }}
-        animate={{ x: 0 }}
-        transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
-        className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'
-      >
-        <div id='end-menu' className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'>
+      <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
+        <motion.div
+          initial={{ x: '-100vw' }}
+          animate={{ x: 0 }}
+          transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
+          id='end-menu'
+          className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'
+        >
           <div className='text-center my-3'>
             <h1>Complete!</h1>
             <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
@@ -116,8 +131,8 @@ const Game = () => {
               Play Again!
             </motion.button>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     )
   }
 
