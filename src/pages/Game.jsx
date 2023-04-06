@@ -44,13 +44,11 @@ const Game = () => {
 
   function handleAnswer (isCorrect, event) {
     const btnCorrect = document.querySelector('.btn-correct')
-    event.target.classList.remove('btn-light')
     if (isCorrect) {
       setScore(score + 1)
       event.target.classList.add('btn-success')
     } else {
       event.target.classList.add('btn-danger')
-      btnCorrect.classList.remove('btn-light')
       btnCorrect.classList.add('btn-success')
     }
     setBtnDisabled(true)
@@ -107,7 +105,7 @@ const Game = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                  className='btn btn-light btn-custom col-6' onClick={() => (handleStart())}
+                  className='btn btn-custom col-6' onClick={() => (handleStart())}
                 >
                   Begin!
                 </motion.button>
@@ -138,7 +136,7 @@ const Game = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-                  className='btn btn-light col-6' onClick={() => (handleEnding())}
+                  className='btn btn-custom col-6' onClick={() => (handleEnding())}
                 >
                   Play Again!
                 </motion.button>
@@ -180,7 +178,7 @@ const Game = () => {
                 {options.map(option => (
                   <motion.button
                     whileHover={{ scale: 1.05 }}
-                    className={`btn btn-light m-2 w-100 text-start btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
+                    className={`btn btn-custom m-2 w-100 text-start btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
                     key={option.id}
                     onClick={(event) => handleAnswer(option.isCorrect, event)}
                     disabled={btnDisabled}

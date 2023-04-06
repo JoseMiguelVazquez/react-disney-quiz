@@ -1,3 +1,5 @@
+/*APP STYLES*/
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -24,10 +26,14 @@ html, body {
   min-height: 100vh;
 }
 
+/*MUTE STYLE*/
+
 i {
   font-size: 30px;
   padding: 0 5px;
 }
+
+/*GENERAL STYLES*/
 
 .card {
   border-radius: 50px!important;
@@ -41,44 +47,10 @@ i {
   min-height: 281px;
 }
 
-#home-title {
-  color: white!important;
-}
-
-#arc {
-  animation: svg-shadow 1s ease-in-out infinite alternate;
-}
-
-@keyframes svg-shadow {
-  from {
-    filter: drop-shadow( 0 0 5px #fff) drop-shadow( 0 0 15px #af32f8) drop-shadow( 0 0 10px #af32f8);
-  }
-
-  to {
-    
-    filter: drop-shadow( 0 0 8px #fff) drop-shadow( 0 0 25px #af32f8) drop-shadow( 0 0 20px #af32f8);
-  }
-}
-
 .custom-wrapper {
   min-height: calc(100vh - 56px);
 }
 
-#question {
-  min-height: 360px;
-}
-
-.character {
-  width: 200px;
-  border-radius: 20px;
-  filter:blur(0px);
-}
-
-#answers {
-  min-height: 216px;
-}
-
-button,
 .btn-custom {
   border: 1px solid rgba(56, 38, 176, 1)!important;
   border-radius: 20px!important;
@@ -100,8 +72,55 @@ button:hover {
   }
 }
 
-h1,h2,h3,p,button {
+h1,h2,h3,p,.btn-custom {
   color: rgb(37, 18, 131)!important;
+}
+
+/*HOME STYLES*/
+
+#home-title {
+  color: white!important;
+}
+
+#home-button{
+  border: 1px solid rgb(255, 255, 255)!important;
+  border-radius: 20px!important;
+  border-color: white;
+}
+
+#home-button:hover {
+  color:rgb(37, 18, 131)!important;
+}
+
+#arc {
+  animation: svg-shadow 1s ease-in-out infinite alternate;
+}
+
+@keyframes svg-shadow {
+  from {
+    filter: drop-shadow( 0 0 5px #fff) drop-shadow( 0 0 15px #af32f8) drop-shadow( 0 0 10px #af32f8);
+  }
+
+  to {
+    
+    filter: drop-shadow( 0 0 8px #fff) drop-shadow( 0 0 25px #af32f8) drop-shadow( 0 0 20px #af32f8);
+  }
+}
+
+/*GAME STYLES*/
+
+#question {
+  min-height: 360px;
+}
+
+.character {
+  width: 200px;
+  border-radius: 20px;
+  filter:blur(0px);
+}
+
+#answers {
+  min-height: 216px;
 }
 
 .btn-correct {

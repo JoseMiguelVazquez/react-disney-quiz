@@ -39,9 +39,10 @@ const Home = () => {
         <h1 id='home-title' className='mb-3'>Disney Character Game</h1>
         <Link className='col-6' to='/game-1'>
           <motion.button
+            id='home-button'
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-            className='btn btn-light btn-custom col-12'
+            className='btn text-white col-12'
           >Play!
           </motion.button>
         </Link>

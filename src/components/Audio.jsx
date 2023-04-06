@@ -18,7 +18,7 @@ const Audio = () => {
   return (
     <div>
       <audio id='song' src={song} loop muted={isMuted} />
-      <button className='position-fixed end-0 mt-2 me-2' onClick={muteAudio}>
+      <button className='btn-custom position-fixed end-0 mt-2 me-2' onClick={muteAudio}>
         {isMuted
           ? <i className='bi bi-volume-mute-fill' />
           : <i className='bi bi-volume-up-fill' />}
