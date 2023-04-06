@@ -11,10 +11,11 @@ const Game = () => {
   const [gameHasEnded, setGameHasEnded] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [showQuestion, setShowQuestion] = useState(true)
+  const [showMenu, setShowMenu] = useState(true)
   const hasFetchData = useRef(false)
 
-  const totalQuestions = 5
+  const totalQuestions = 2
+
   useEffect(() => {
     function fetchData () {
       const charactersFetched = createRandomIds().map(id => fetch(`https://api.disneyapi.dev/characters/${id}`))
@@ -56,11 +57,11 @@ const Game = () => {
     setTimeout(() => {
       hasFetchData.current = false
       setCurrentQuestion(currentQuestion + 1)
-      setShowQuestion(false)
+      setShowMenu(false)
       setBtnDisabled(false)
     }, 1000)
     setTimeout(() => {
-      setShowQuestion(true)
+      setShowMenu(true)
     }, 1500)
     setTimeout(() => {
       if (currentQuestion === totalQuestions) {
@@ -70,12 +71,20 @@ const Game = () => {
   }
 
   function handleStart () {
-    setShowQuestion(false)
+    setShowMenu(false)
     setScore(0)
     setGameHasEnded(false)
     setCurrentQuestion(currentQuestion + 1)
     setTimeout(() => {
-      setShowQuestion(true)
+      setShowMenu(true)
+    }, 500)
+  }
+
+  function handleEnding () {
+    setShowMenu(false)
+    setCurrentQuestion(0)
+    setTimeout(() => {
+      setShowMenu(true)
     }, 500)
   }
 
@@ -83,7 +92,7 @@ const Game = () => {
     return (
       <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
         <AnimatePresence>
-          {showQuestion && (
+          {showMenu && (
             <motion.div
               initial={{ x: '-100vw' }}
               animate={{ x: 0 }}
@@ -113,25 +122,30 @@ const Game = () => {
   if (gameHasEnded) {
     return (
       <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
-        <motion.div
-          initial={{ x: '-100vw' }}
-          animate={{ x: 0 }}
-          transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
-          id='end-menu'
-          className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'
-        >
-          <div className='text-center my-3'>
-            <h1>Complete!</h1>
-            <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              className='btn btn-light col-6' onClick={() => (setCurrentQuestion(0))}
+        <AnimatePresence>
+          {showMenu && (
+            <motion.div
+              initial={{ x: '-100vw' }}
+              animate={{ x: 0 }}
+              transition={{ type: 'spring', stiffness: 80, delay: 0.2, damping: 12 }}
+              exit={{ x: '-100vw', opacity: 0 }}
+              id='end-menu'
+              className='col-11 col-sm-8 col-xl-6 col-xxl-4 card d-flex justify-content-center'
             >
-              Play Again!
-            </motion.button>
-          </div>
-        </motion.div>
+              <div className='text-center my-3'>
+                <h1>Complete!</h1>
+                <h2 className='mb-3'>Score: {score}/{totalQuestions} </h2>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                  className='btn btn-light col-6' onClick={() => (handleEnding())}
+                >
+                  Play Again!
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     )
   }
@@ -139,7 +153,7 @@ const Game = () => {
   return (
     <div className='custom-wrapper d-flex flex-column align-items-center justify-content-center py-5'>
       <AnimatePresence>
-        {showQuestion && (
+        {showMenu && (
           <motion.div
             initial={{ x: '-100vw' }}
             animate={{ x: 0 }}
