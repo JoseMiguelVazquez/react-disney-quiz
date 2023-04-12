@@ -21,17 +21,17 @@ const Game = () => {
 
   useEffect(() => {
     function fetchData () {
-      const charactersFetched = createRandomIds().map(id => fetch(`https://api.disneyapi.dev/characters/${id}`))
+      const charactersFetched = createRandomIds().map(id => fetch(`https://api.disneyapi.dev/character/${id}`))
       Promise.all(charactersFetched)
         .then(([res1, res2, res3, res4]) =>
           Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
         .then(([data1, data2, data3, data4]) => {
-          setCorrect(data1)
+          setCorrect(data1.data)
           setOptions(shuffle([
-            { answer: data1.name, isCorrect: true, id: data1._id },
-            { answer: data2.name, isCorrect: false, id: data2._id },
-            { answer: data3.name, isCorrect: false, id: data3._id },
-            { answer: data4.name, isCorrect: false, id: data4._id }
+            { answer: data1.data.name, isCorrect: true, id: data1.data._id },
+            { answer: data2.data.name, isCorrect: false, id: data2.data._id },
+            { answer: data3.data.name, isCorrect: false, id: data3.data._id },
+            { answer: data4.data.name, isCorrect: false, id: data4.data._id }
           ]))
           setLoading(false)
         })
