@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { createRandomIds, shuffle } from '../utils/functions.js'
+import { createRandomIds, createRandomId, shuffle } from '../utils/functions.js'
 import Loading from '../components/Loading'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -20,24 +20,54 @@ const Game = () => {
   const hasFetchData = useRef(false)
 
   useEffect(() => {
-    function fetchData () {
-      const charactersFetched = createRandomIds().map(id => fetch(`https://api.disneyapi.dev/character/${id}`))
-      Promise.all(charactersFetched)
-        .then(([res1, res2, res3, res4]) =>
-          Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
-        .then(([data1, data2, data3, data4]) => {
-          setCorrect(data1.data)
-          setOptions(shuffle([
-            { answer: data1.data.name, isCorrect: true, id: data1.data._id },
-            { answer: data2.data.name, isCorrect: false, id: data2.data._id },
-            { answer: data3.data.name, isCorrect: false, id: data3.data._id },
-            { answer: data4.data.name, isCorrect: false, id: data4.data._id }
-          ]))
-          setLoading(false)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    const fetchData = async () => {
+      const charactersFetched = []
+      for (let index = 0; index < 4; index++) {
+        const maxAttempts = 10
+        for (let count = 0; count < maxAttempts; count++) {
+          const id = createRandomId()
+          try {
+            const res = await fetch(`https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/id/${id}.json`)
+            const hero = await res.json()
+            charactersFetched.push(hero)
+            console.log(hero)
+            count = maxAttempts
+          } catch (error) {
+            console.log(id, ' no existe')
+          }
+        }
+      }
+      setCorrect(await charactersFetched[0])
+      console.log(await charactersFetched[0])
+      setOptions(shuffle([
+        { answer: charactersFetched[0]?.name, isCorrect: true, id: charactersFetched[0]?.id },
+        { answer: charactersFetched[1]?.name, isCorrect: false, id: charactersFetched[1]?.id },
+        { answer: charactersFetched[2]?.name, isCorrect: false, id: charactersFetched[2]?.id },
+        { answer: charactersFetched[3]?.name, isCorrect: false, id: charactersFetched[3]?.id }
+      ]))
+      setLoading(false)
+
+      // .catch(error => {
+      //   console.log(error)
+      // })
+      // const charactersFetched = createRandomIds().map(id => fetch(`https://api.disneyapi.dev/character/${id}`))
+      // Promise.all(charactersFetched)
+      //   .then(([res1, res2, res3, res4]) =>
+      //     Promise.all([res1.json(), res2.json(), res3.json(), res4.json()]))
+      //   .then(([data1, data2, data3, data4]) => {
+      //     setCorrect(data1.data)
+      //     console.log(data1)
+      //     setOptions(shuffle([
+      //       { answer: data1.data.name, isCorrect: true, id: data1.data._id },
+      //       { answer: data2.data.name, isCorrect: false, id: data2.data._id },
+      //       { answer: data3.data.name, isCorrect: false, id: data3.data._id },
+      //       { answer: data4.data.name, isCorrect: false, id: data4.data._id }
+      //     ]))
+      //     setLoading(false)
+      //   })
+      //   .catch(error => {
+      //     console.log(error)
+      //   })
     }
     if (hasFetchData.current === false) {
       fetchData()
@@ -62,6 +92,7 @@ const Game = () => {
   function nextQuestion () {
     setTimeout(() => {
       hasFetchData.current = false
+      setLoading(true)
       setCurrentQuestion(currentQuestion + 1)
       setShowMenu(false)
       setBtnDisabled(false)
@@ -219,30 +250,34 @@ const Game = () => {
               <h2>What is this character's name?</h2>
               <h3>Question {currentQuestion} of {totalQuestions}</h3>
             </div>
-            <div className='d-flex flex-wrap mb-4'>
-              <div className='ps-3 col-12 col-sm-6 text-center d-flex flex-column justify-content-center align-items-center'>
-                {loading
-                  ? <Loading />
-                  : <img
-                      className='character mb-2'
-                      src={correct?.imageUrl}
-                      alt='character'
-                    />}
-                {/* <span>Remaining Time: {remainingTime}</span> */}
-              </div>
-              <div id='answers' className='d-flex flex-column justify-content-center align-items-start col-12 col-sm-6 pe-5'>
-                {options.map(option => (
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    className={`btn btn-custom m-2 w-100 text-start btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
-                    key={option.id}
-                    onClick={(event) => handleAnswer(option.isCorrect, event)}
-                    disabled={btnDisabled}
-                  >
-                    {option.answer}
-                  </motion.button>
-                ))}
-              </div>
+            <div className='d-flex flex-wrap mb-4 flex-grow-1 align-items-center'>
+              {loading
+                ? <Loading />
+                : (
+                  <>
+                    <div className='ps-3 col-12 col-sm-6 text-center d-flex flex-column justify-content-center align-items-center'>
+                      <img
+                        className='character mb-2'
+                        src={correct?.images.sm}
+                        alt='character'
+                      />
+                      {/* <span>Remaining Time: {remainingTime}</span> */}
+                    </div>
+                    <div id='answers' className='d-flex flex-column justify-content-center align-items-start col-12 col-sm-6 pe-5'>
+                      {options.map(option => (
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          className={`btn btn-custom m-2 w-100 text-start btn-${option.isCorrect ? 'correct' : 'incorrect'}`}
+                          key={option.id}
+                          onClick={(event) => handleAnswer(option.isCorrect, event)}
+                          disabled={btnDisabled}
+                        >
+                          {option.answer}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </>
+                  )}
             </div>
           </motion.div>
         )}
